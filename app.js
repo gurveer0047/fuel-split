@@ -2,7 +2,7 @@
    CONFIG — change SHEETS_URL here only
 ───────────────────────────────────────────── */
 const CONFIG = {
-  SHEETS_URL: localStorage.getItem('fs_sheets_url') || '',
+  SHEETS_URL: localStorage.getItem('fs_sheets_url') || "https://script.google.com/macros/s/AKfycbxTWodRTVOpTOR_p_stZb19d1FcFlpARH11fm4shptxpvtSCgUvBkfCA1A2aZEdpuWqKQ/exec",
   CAR_NAME:   'Swift VDi DDiS 2010',
   CITY:       'Chandigarh',
   CITY_KML:   15.5,
