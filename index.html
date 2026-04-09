@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Fuel Split">
+  <title>Fuel Split — New Trip</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ── SETTINGS ── -->
+<div class="settings-overlay" id="settings-overlay"></div>
+<aside class="settings-panel" id="settings-panel" aria-label="Settings">
+  <div class="settings-header">
+    <span class="settings-title">Settings</span>
+    <button class="settings-close" id="settings-close" aria-label="Close">✕</button>
+  </div>
+  <div class="settings-body">
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Dark mode</div>
+        <div class="setting-sub">Switch appearance</div>
+      </div>
+      <div class="toggle-wrap">
+        <input type="checkbox" class="toggle-input" id="theme-toggle">
+        <label class="toggle-track" for="theme-toggle"></label>
+      </div>
+    </div>
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Notifications</div>
+        <div class="setting-sub">Trip alerts in browser</div>
+      </div>
+      <div class="toggle-wrap">
+        <input type="checkbox" class="toggle-input" id="notif-toggle">
+        <label class="toggle-track" for="notif-toggle"></label>
+      </div>
+    </div>
+    <div class="setting-row" style="flex-direction:column;align-items:flex-start;gap:0">
+      <div class="setting-label">Google Sheets URL</div>
+      <div class="setting-sub" style="margin-bottom:8px">Your Apps Script Web App URL</div>
+      <input type="text" class="settings-input" id="setting-sheets-url" placeholder="https://script.google.com/macros/s/…">
+      <button class="settings-save-btn" id="settings-save-url">Save</button>
+    </div>
+  </div>
+</aside>
+
+<!-- ── HERO ── -->
+<header class="hero">
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="car-wrap" aria-hidden="true">
+    <svg class="car-svg" viewBox="0 0 580 200" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="290" cy="196" rx="210" ry="8" fill="rgba(0,0,0,0.07)"/>
+      <path d="M60 152 Q60 124 78 114 L128 86 Q152 52 198 46 L320 42 Q368 42 398 62 L476 108 Q506 118 518 138 L522 152 Z" fill="var(--bg-3)"/>
+      <path d="M148 112 Q164 70 210 56 L318 52 Q360 52 386 70 L448 108 Z" fill="var(--bg-2)"/>
+      <path d="M162 106 Q178 72 212 60 L310 56 L378 68 L428 104 Z" fill="rgba(150,200,255,0.1)" stroke="rgba(150,200,255,0.2)" stroke-width="0.8"/>
+      <path d="M398 106 Q428 108 476 108 L522 138 L522 152 L400 152 Z" fill="var(--bg-2)"/>
+      <path d="M498 116 Q516 116 520 126 L522 138 L488 138 L486 120 Z" fill="rgba(200,220,255,0.12)" stroke="var(--border-2)" stroke-width="0.8"/>
+      <ellipse cx="508" cy="128" rx="5" ry="4" fill="rgba(200,220,255,0.7)"/>
+      <rect x="488" y="132" width="28" height="12" rx="2" fill="var(--border)"/>
+      <path d="M60 152 L522 152 L518 166 Q508 178 490 178 L100 178 Q76 178 64 168 Z" fill="var(--bg-2)"/>
+      <path d="M78 124 Q66 128 62 140 L60 152 L88 152 L88 118 Z" fill="rgba(255,100,100,0.12)" stroke="rgba(255,80,80,0.25)" stroke-width="0.8"/>
+      <ellipse cx="74" cy="138" rx="4" ry="6" fill="rgba(255,80,80,0.35)"/>
+      <line x1="290" y1="114" x2="290" y2="178" stroke="var(--border)" stroke-width="0.8"/>
+      <line x1="200" y1="114" x2="200" y2="178" stroke="var(--border)" stroke-width="0.8"/>
+      <rect x="234" y="142" width="24" height="4" rx="2" fill="var(--border-2)"/>
+      <rect x="318" y="142" width="24" height="4" rx="2" fill="var(--border-2)"/>
+      <circle cx="155" cy="182" r="30" fill="var(--bg-3)" stroke="var(--border-2)" stroke-width="2"/>
+      <circle cx="155" cy="182" r="18" fill="var(--bg-2)" stroke="var(--border)" stroke-width="1"/>
+      <circle cx="155" cy="182" r="6"  fill="var(--bg-3)"/>
+      <line x1="155" y1="166" x2="155" y2="198" stroke="var(--border-2)" stroke-width="1.5"/>
+      <line x1="139" y1="182" x2="171" y2="182" stroke="var(--border-2)" stroke-width="1.5"/>
+      <line x1="144" y1="171" x2="166" y2="193" stroke="var(--border-2)" stroke-width="1.2"/>
+      <line x1="144" y1="193" x2="166" y2="171" stroke="var(--border-2)" stroke-width="1.2"/>
+      <circle cx="430" cy="182" r="30" fill="var(--bg-3)" stroke="var(--border-2)" stroke-width="2"/>
+      <circle cx="430" cy="182" r="18" fill="var(--bg-2)" stroke="var(--border)" stroke-width="1"/>
+      <circle cx="430" cy="182" r="6"  fill="var(--bg-3)"/>
+      <line x1="430" y1="166" x2="430" y2="198" stroke="var(--border-2)" stroke-width="1.5"/>
+      <line x1="414" y1="182" x2="446" y2="182" stroke="var(--border-2)" stroke-width="1.5"/>
+      <line x1="419" y1="171" x2="441" y2="193" stroke="var(--border-2)" stroke-width="1.2"/>
+      <line x1="419" y1="193" x2="441" y2="171" stroke="var(--border-2)" stroke-width="1.2"/>
+    </svg>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="dot" aria-hidden="true"></span> Live tracking</div>
+    <h1 class="hero-title">Fuel Split</h1>
+    <p class="hero-sub">Swift VDi DDiS 2010 · Chandigarh</p>
+    <div class="fuel-pill" role="status" aria-live="polite">
+      <span class="label">Diesel</span>
+      <span class="price" id="fuel-price-hero">—</span>
+      <span class="label">₹/L</span>
+      <span class="loading" id="fuel-loading">fetching…</span>
+    </div>
+  </div>
+</header>
+
+<!-- ── NAV ── -->
+<nav class="nav" role="navigation">
+  <a href="index.html" class="nav-logo" aria-label="Fuel Split home">⛽</a>
+  <a href="index.html" class="active" aria-current="page">New Trip</a>
+  <a href="dashboard.html">Dashboard</a>
+  <div class="nav-right">
+    <span class="nav-clock" id="nav-clock">--:--:--</span>
+    <span class="nav-date"  id="nav-date"></span>
+    <button class="nav-icon-btn" id="settings-btn" aria-label="Settings">⚙</button>
+  </div>
+</nav>
+
+<!-- ── ACTIVE TRIP BANNER ── -->
+<section class="active-trip-banner" id="active-trip-banner" aria-label="Trip in progress">
+  <div class="atb-inner">
+    <div class="atb-pulse" aria-hidden="true"></div>
+    <div class="atb-info">
+      <div class="atb-title" id="atb-title">Trip in progress</div>
+      <div class="atb-meta"  id="atb-meta">Started at —</div>
+    </div>
+    <div class="atb-duration" id="atb-duration" aria-live="off">00m 00s</div>
+  </div>
+  <div class="atb-inner">
+    <div class="atb-end-row">
+      <input type="number" id="atb-odo-end" inputmode="numeric" placeholder="End odometer (km)" aria-label="End odometer">
+      <button class="btn-finish" id="btn-finish-trip">Finish Trip</button>
+      <button class="btn-cancel-trip" id="btn-cancel-trip">Cancel</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── FORM ── -->
+<main class="container" id="form-section">
+
+  <!-- 1 · Trip details -->
+  <div class="section-head">
+    <div class="section-num" aria-hidden="true">1</div>
+    <h2 class="section-title">Trip details</h2>
+  </div>
+  <div class="card">
+    <div class="form-grid cols-2">
+      <div class="field">
+        <label for="trip-name">Trip name</label>
+        <input type="text" id="trip-name" placeholder="e.g. Shimla weekend" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="trip-date">Date</label>
+        <input type="date" id="trip-date">
+      </div>
+    </div>
+  </div>
+
+  <!-- 2 · Odometer -->
+  <div class="section-head section-gap">
+    <div class="section-num" aria-hidden="true">2</div>
+    <h2 class="section-title">Odometer readings</h2>
+    <span class="section-meta" id="dist-display" aria-live="polite"></span>
+  </div>
+  <div class="card">
+    <div class="odo-row">
+      <div class="field">
+        <label for="odo-start">Start (km)</label>
+        <input type="number" id="odo-start" placeholder="68400" inputmode="numeric">
+      </div>
+      <div class="odo-arrow" aria-hidden="true">→</div>
+      <div class="field">
+        <label for="odo-end">End (km)</label>
+        <input type="number" id="odo-end" placeholder="68720" inputmode="numeric">
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 · Drive type -->
+  <div class="section-head section-gap">
+    <div class="section-num" aria-hidden="true">3</div>
+    <h2 class="section-title">Drive type</h2>
+  </div>
+  <div class="card">
+    <div class="mileage-toggle" role="group" aria-label="Drive type">
+      <label class="mileage-opt">
+        <input type="radio" name="mileage" value="15.5" id="mileage-city" checked>
+        <div class="mileage-face">
+          <span class="mileage-icon" aria-hidden="true">🏙️</span>
+          <span class="mileage-name">City</span>
+          <span class="mileage-val">15.5 km/L</span>
+          <span class="mileage-desc">Stop-go traffic</span>
+        </div>
+      </label>
+      <label class="mileage-opt">
+        <input type="radio" name="mileage" value="19" id="mileage-hwy">
+        <div class="mileage-face">
+          <span class="mileage-icon" aria-hidden="true">🛣️</span>
+          <span class="mileage-name">Highway</span>
+          <span class="mileage-val">19.0 km/L</span>
+          <span class="mileage-desc">Open road</span>
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <!-- 4 · Passengers -->
+  <div class="section-head section-gap">
+    <div class="section-num" aria-hidden="true">4</div>
+    <h2 class="section-title">Who's coming?</h2>
+    <span class="section-meta" id="pcount-display" aria-live="polite"></span>
+  </div>
+  <div class="card">
+    <div class="passenger-grid" id="p-grid" role="group" aria-label="Passengers"></div>
+    <div class="add-row">
+      <input type="text" id="new-person" placeholder="Add someone new…" autocomplete="off" aria-label="New passenger name">
+      <button class="add-btn" id="add-person-btn" aria-label="Add passenger">+</button>
+    </div>
+  </div>
+
+  <!-- Live result -->
+  <div class="result-card" id="result-card" role="region" aria-label="Cost breakdown" aria-live="polite">
+    <div class="result-grid">
+      <div class="result-stat"><div class="val" id="r-dist">—</div><div class="lbl">Distance</div></div>
+      <div class="result-stat"><div class="val" id="r-fuel">—</div><div class="lbl">Fuel used</div></div>
+      <div class="result-stat"><div class="val" id="r-total">—</div><div class="lbl">Total cost</div></div>
+    </div>
+    <div class="per-person-box">
+      <div class="pp-label">Each person pays</div>
+      <div class="pp-val" id="r-per">₹0</div>
+      <div class="pp-sub" id="r-sub">across 0 people</div>
+    </div>
+    <div class="split-list" id="split-list" aria-label="Per-person breakdown"></div>
+  </div>
+
+  <!-- Actions -->
+  <button class="btn-start" id="btn-start-trip">Start Trip</button>
+  <button class="btn-primary" id="btn-save-trip">
+    <span id="submit-text">Save Trip &amp; Sync to Sheets</span>
+  </button>
+  <a href="dashboard.html" class="btn-secondary">View dashboard →</a>
+
+</main>
+
+<div class="toast" id="toast" role="alert" aria-live="assertive"></div>
+
+<script src="app.js"></script>
+<script src="trip.js"></script>
+</body>
+</html>

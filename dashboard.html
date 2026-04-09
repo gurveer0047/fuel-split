@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Fuel Split — Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ── SETTINGS ── -->
+<div class="settings-overlay" id="settings-overlay"></div>
+<aside class="settings-panel" id="settings-panel" aria-label="Settings">
+  <div class="settings-header">
+    <span class="settings-title">Settings</span>
+    <button class="settings-close" id="settings-close" aria-label="Close">✕</button>
+  </div>
+  <div class="settings-body">
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Dark mode</div>
+        <div class="setting-sub">Switch appearance</div>
+      </div>
+      <div class="toggle-wrap">
+        <input type="checkbox" class="toggle-input" id="theme-toggle">
+        <label class="toggle-track" for="theme-toggle"></label>
+      </div>
+    </div>
+    <div class="setting-row" style="flex-direction:column;align-items:flex-start;gap:0">
+      <div class="setting-label">Google Sheets URL</div>
+      <div class="setting-sub" style="margin-bottom:8px">Your Apps Script Web App URL</div>
+      <input type="text" class="settings-input" id="setting-sheets-url" placeholder="https://script.google.com/macros/s/…">
+      <button class="settings-save-btn" id="settings-save-url">Save</button>
+    </div>
+  </div>
+</aside>
+
+<!-- ── NAV ── -->
+<nav class="nav" role="navigation">
+  <a href="index.html" class="nav-logo" aria-label="Fuel Split home">⛽</a>
+  <a href="index.html">New Trip</a>
+  <a href="dashboard.html" class="active" aria-current="page">Dashboard</a>
+  <div class="nav-right">
+    <span class="nav-clock" id="nav-clock">--:--:--</span>
+    <span class="nav-date"  id="nav-date"></span>
+    <button class="nav-icon-btn" id="settings-btn" aria-label="Settings">⚙</button>
+  </div>
+</nav>
+
+<!-- ── DASH HEADER ── -->
+<div class="dash-header">
+  <div>
+    <h1 class="dash-title">Dashboard</h1>
+    <p class="dash-sub">Swift VDi DDiS 2010 · Chandigarh</p>
+  </div>
+  <div class="header-actions">
+    <a href="index.html" class="btn-outline">+ New Trip</a>
+    <button class="btn-export" id="btn-export-csv">Export CSV</button>
+  </div>
+</div>
+
+<!-- ── MAIN ── -->
+<main class="container-wide" role="main">
+
+  <!-- Stat cards -->
+  <div class="stats-row" id="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Total trips</div>
+      <div class="stat-val" id="s-trips">—</div>
+      <div class="stat-sub">recorded</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total distance</div>
+      <div class="stat-val" id="s-km">—</div>
+      <div class="stat-sub">kilometres</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total spent</div>
+      <div class="stat-val" id="s-spent">—</div>
+      <div class="stat-sub">on fuel</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Avg per trip</div>
+      <div class="stat-val" id="s-avg">—</div>
+      <div class="stat-sub">per person</div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="charts-grid">
+    <div class="chart-card wide">
+      <div class="chart-label">Cost per trip over time</div>
+      <div class="chart-wrap tall"><canvas id="chart-line" aria-label="Trip costs over time"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-label">City vs highway</div>
+      <div class="chart-wrap"><canvas id="chart-donut" aria-label="City vs highway distribution"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-label">Top passengers by spend</div>
+      <div class="leaderboard" id="leaderboard" role="list"></div>
+    </div>
+  </div>
+
+  <!-- Trip list -->
+  <div class="table-section">
+    <div class="table-head">
+      <h2 class="table-title">All trips</h2>
+      <div class="controls">
+        <input class="search-input" type="text" id="search-inp" placeholder="Search…" aria-label="Search trips">
+        <select class="filter-sel" id="filter-type" aria-label="Filter by type">
+          <option value="">All types</option>
+          <option value="City">City</option>
+          <option value="Highway">Highway</option>
+        </select>
+        <select class="filter-sel" id="sort-by" aria-label="Sort trips">
+          <option value="date-desc">Newest first</option>
+          <option value="date-asc">Oldest first</option>
+          <option value="cost-desc">Highest cost</option>
+          <option value="cost-asc">Lowest cost</option>
+          <option value="dist-desc">Longest distance</option>
+        </select>
+      </div>
+    </div>
+    <div id="trips-list" role="list" aria-label="Saved trips"></div>
+  </div>
+
+</main>
+
+<div class="toast" id="toast" role="alert" aria-live="assertive"></div>
+
+<script src="app.js"></script>
+<script src="dashboard.js"></script>
+</body>
+</html>
