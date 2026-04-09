@@ -26,7 +26,7 @@ const KEYS = {
 /* ─────────────────────────────────────────────
    STATE
 ───────────────────────────────────────────── */
-let people   = JSON.parse(localStorage.getItem(KEYS.PEOPLE) || '["You","Rahul","Priya","Amit","Sneha","Vikram"]');
+let people   = JSON.parse(localStorage.getItem(KEYS.PEOPLE) || '["Gurveer","Taj","Sehaj","Dhanveer","Bhupinder","Pinder","harman doda"]');
 let trips    = JSON.parse(localStorage.getItem(KEYS.TRIPS)  || '[]');
 let selected = new Set([people[0]]);
 let livePrice = parseFloat(localStorage.getItem(KEYS.PRICE) || CONFIG.FALLBACK_DIESEL_PRICE);
