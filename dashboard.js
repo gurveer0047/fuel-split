@@ -35,7 +35,8 @@ function buildTooltipConfig(theme) {
 ───────────────────────────────────────────── */
 function renderStats(visibleTrips) {
   if (visibleTrips.length === 0) {
-    ['s-trips','s-km','s-spent','s-avg'].forEach(id => {
+    // UPDATED: added 's-fuel' to empty reset
+    ['s-trips','s-km','s-spent','s-avg','s-fuel'].forEach(id => {
       document.getElementById(id).textContent = '—';
     });
     return;
@@ -43,11 +44,15 @@ function renderStats(visibleTrips) {
   const totalKm    = visibleTrips.reduce((s,t) => s + t.distance, 0);
   const totalSpent = visibleTrips.reduce((s,t) => s + t.totalCost, 0);
   const avgPer     = visibleTrips.reduce((s,t) => s + t.perPerson, 0) / visibleTrips.length;
+  // ADDED: total fuel
+  const totalFuel  = visibleTrips.reduce((s,t) => s + t.fuelUsed, 0);
 
   document.getElementById('s-trips').textContent = visibleTrips.length;
   document.getElementById('s-km').textContent    = totalKm.toFixed(0);
   document.getElementById('s-spent').textContent = '₹' + totalSpent.toFixed(0);
   document.getElementById('s-avg').textContent   = '₹' + avgPer.toFixed(0);
+  // ADDED
+  document.getElementById('s-fuel').textContent  = totalFuel.toFixed(1) + ' L';
 }
 
 /* ─────────────────────────────────────────────

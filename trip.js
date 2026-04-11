@@ -14,8 +14,10 @@ function recalc() {
     return;
   }
 
+  // UPDATED: use manual fuel price input if available
+  const fuelPrice = parseFloat(document.getElementById('fuel-price')?.value) || livePrice;
   const { distance, fuelUsed, totalCost, perPerson } = calcTrip({
-    startOdo: start, endOdo: end, mileage, fuelPrice: livePrice,
+    startOdo: start, endOdo: end, mileage, fuelPrice: fuelPrice,
     passengers: [...selected],
   });
   const n = selected.size || 1;
@@ -232,6 +234,13 @@ function resetForm() {
   document.getElementById('dist-display').textContent = '';
 }
 
+// ADDED
+function getLastEndOdo() {
+  const activeTrips = trips.filter(t => t.status !== 'deleted');
+  if (activeTrips.length === 0) return '';
+  return activeTrips[0].endOdo;
+}
+
 /* ── PAGE INIT ── */
 (function initTripPage() {
   // Shared init (theme, clock, settings panel)
@@ -242,6 +251,27 @@ function resetForm() {
 
   // Passengers
   renderChips();
+
+  // ADDED: fuel price input init
+  const fuelInput = document.getElementById('fuel-price');
+  if (fuelInput) {
+    fuelInput.value = livePrice;
+    fuelInput.addEventListener('input', () => {
+      const val = parseFloat(fuelInput.value);
+      if (!isNaN(val) && val > 0) {
+        livePrice = val;
+        localStorage.setItem(KEYS.PRICE, val);
+        recalc();
+      }
+    });
+  }
+
+  // ADDED: auto-fill start odometer if empty
+  const startInput = document.getElementById('odo-start');
+  if (startInput && !startInput.value) {
+    const lastOdo = getLastEndOdo();
+    if (lastOdo) startInput.value = lastOdo;
+  }
 
   // Fetch live price
   fetchDieselPrice();
